@@ -23,8 +23,8 @@ public class EstadoCuentaItemWriterConfig {
                 new BeanPropertyItemSqlParameterSourceProvider<>()
             )
             .sql(
-                "INSERT INTO estado_cuenta (cuenta_id, ingresos, salidas, diferencia) " +
-                "VALUES (:cuentaId, :ingresos, :salidas, :diferencia)"
+                "INSERT INTO estado_cuenta (cuenta_id, ingresos, gastos, saldo) " +
+                "VALUES (:cuentaId, :ingresos, :gastos, :saldo)"
             )
             .assertUpdates(true) // Verifica que se haya actualizado al menos una fila en la base de datos
             .build();

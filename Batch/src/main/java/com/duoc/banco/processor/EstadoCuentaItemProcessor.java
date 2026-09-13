@@ -13,7 +13,7 @@ public class EstadoCuentaItemProcessor implements ItemProcessor<EstadoCuenta, Es
         // El ItemProcessor recibe el EstadoCuenta consolidado desde el Reader
         
         // Filtrar cuentas que no tuvieron movimientos (ni entradas ni salidas)
-        if (estadoCuenta.getIngresos() == 0 && estadoCuenta.getSalidas() == 0) {
+        if (estadoCuenta.getIngresos() == 0 && estadoCuenta.getGastos() == 0) {
             return null;
         }
         

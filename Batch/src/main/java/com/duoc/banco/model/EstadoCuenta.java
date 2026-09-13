@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class EstadoCuenta {
     private Long cuentaId;
     private Integer ingresos;
-    private Integer salidas;
-    private Integer diferencia;
+    private Integer gastos;
+    private Integer saldo;
 
 }

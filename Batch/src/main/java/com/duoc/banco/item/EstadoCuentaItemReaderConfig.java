@@ -48,13 +48,13 @@ public class EstadoCuentaItemReaderConfig {
 
             Long cuentaIdActual = primerMov.getCuentaId();
             int ingresos = 0;
-            int salidas = 0;
+            int gastos = 0;
 
             // Agregar el primer movimiento a los montos acumulados
             if (primerMov.getMonto() > 0) {
                 ingresos += primerMov.getMonto();
             } else if (primerMov.getMonto() < 0) {
-                salidas += Math.abs(primerMov.getMonto());
+                gastos += Math.abs(primerMov.getMonto());
             } else {
                 throw new MovimientoCuentaNoValidoException("El monto del movimiento no puede ser 0");
             }
@@ -69,7 +69,7 @@ public class EstadoCuentaItemReaderConfig {
                 if (movConsumido.getMonto() > 0) {
                     ingresos += movConsumido.getMonto();
                 } else if (movConsumido.getMonto() < 0) {
-                    salidas += Math.abs(movConsumido.getMonto());
+                    gastos += Math.abs(movConsumido.getMonto());
                 } else {
                     throw new MovimientoCuentaNoValidoException("El monto del movimiento no puede ser 0");
                 }
@@ -79,8 +79,8 @@ public class EstadoCuentaItemReaderConfig {
             }
 
             // Retorna el EstadoCuenta resultante para la cuenta actual
-            int diferenciaTotal = ingresos - salidas;
-            return new EstadoCuenta(cuentaIdActual, ingresos, salidas, diferenciaTotal);
+            int saldo = ingresos - gastos;
+            return new EstadoCuenta(cuentaIdActual, ingresos, gastos, saldo);
         };
     }
 

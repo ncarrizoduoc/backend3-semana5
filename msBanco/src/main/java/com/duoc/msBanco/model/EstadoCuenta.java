@@ -9,11 +9,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "estado_cuenta")
 @Data
+@AllArgsConstructor 
+@NoArgsConstructor 
 public class EstadoCuenta {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +27,10 @@ public class EstadoCuenta {
     private Integer ingresos;
 
     @Column(name = "salidas", nullable = false)
-    private Integer salidas;
+    private Integer gastos;
 
     @Column(name = "diferencia", nullable = false)
-    private Integer diferencia;
+    private Integer saldo;
 
     @Transient 
     private List<MovimientoCuenta> movimientos;

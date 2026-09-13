@@ -38,6 +38,6 @@ CREATE INDEX idx_movimiento_cuenta_cuenta_id ON movimiento_cuenta (cuenta_id);
 CREATE TABLE IF NOT EXISTS estado_cuenta (
     cuenta_id BIGINT PRIMARY KEY,
     ingresos INT NOT NULL,
-    salidas INT NOT NULL,
-    diferencia INT NOT NULL
+    gastos INT NOT NULL,
+    saldo INT NOT NULL
 );
