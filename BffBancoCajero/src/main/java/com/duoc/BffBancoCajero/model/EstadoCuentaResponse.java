@@ -9,7 +9,7 @@ public class EstadoCuentaResponse {
 
     public EstadoCuentaResponse(EstadoCuenta estadoCuenta) {
         this.cuentaId = estadoCuenta.getCuentaId();
-        this.saldo = estadoCuenta.getDiferencia();
+        this.saldo = estadoCuenta.getSaldo();
     }
 
 }
