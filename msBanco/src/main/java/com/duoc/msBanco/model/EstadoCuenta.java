@@ -26,10 +26,10 @@ public class EstadoCuenta {
     @Column(name = "ingresos", nullable = false)
     private Integer ingresos;
 
-    @Column(name = "salidas", nullable = false)
+    @Column(name = "gastos", nullable = false)
     private Integer gastos;
 
-    @Column(name = "diferencia", nullable = false)
+    @Column(name = "saldo", nullable = false)
     private Integer saldo;
 
     @Transient 

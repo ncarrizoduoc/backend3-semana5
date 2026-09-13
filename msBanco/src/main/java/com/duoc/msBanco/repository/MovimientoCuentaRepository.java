@@ -11,4 +11,5 @@ public interface MovimientoCuentaRepository extends JpaRepository<MovimientoCuen
     List<MovimientoCuenta> findByCuentaId(Long cuentaId);
     List<MovimientoCuenta> findByTransaccion(String transaccion);
     List<MovimientoCuenta> findByFecha(LocalDate fecha);
+    List<MovimientoCuenta> findByTransaccionAndFecha(String transaccion, LocalDate fecha);
 }

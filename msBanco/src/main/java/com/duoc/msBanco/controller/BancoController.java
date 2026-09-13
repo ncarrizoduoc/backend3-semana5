@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.duoc.msBanco.model.EstadoCuenta;
 import com.duoc.msBanco.model.MovimientoCuenta;
 import com.duoc.msBanco.model.TransferenciaRequest;
-import com.duoc.msBanco.model.TransferenciaResponse;
 import com.duoc.msBanco.service.BancoService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,32 +24,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/banco")
 public class BancoController {
 
-    private BancoService bancoService;
+    private final BancoService bancoService;
+
+    public BancoController(BancoService bancoService) {
+        this.bancoService = bancoService;
+    }
 
     @GetMapping("/estado-cuenta/{id}")
     public EstadoCuenta findById(@PathVariable Long id) {
         return bancoService.findById(id);
     }
 
-    @PostMapping("/transferencia")
-    public TransferenciaResponse realizarTransferencia(@Valid @RequestBody TransferenciaRequest request){
+    @PostMapping("/transferencias")
+    public MovimientoCuenta realizarTransferencia(@Valid @RequestBody TransferenciaRequest request){
         return bancoService.realizarTransferencia(request);
     }
 
-    @PostMapping("/movimiento")
+    @PostMapping("/movimientos")
     public MovimientoCuenta realizarMovimiento(@Valid @RequestBody MovimientoCuenta movimiento) {
         movimiento.setId(null); // ID null para que se genere automáticamente
         return bancoService.realizarMovimiento(movimiento);
     }
 
-    @GetMapping("/movimiento")
-    public List<MovimientoCuenta> findMovimientoByTipo(@RequestParam String tipoMovimiento) {
-        return bancoService.findMovimientoByTipo(tipoMovimiento);
-    }
-
-    @GetMapping("/movimiento")
-    public List<MovimientoCuenta> findMovimientoByFecha(@RequestParam LocalDate fecha) {
-        return bancoService.findMovimientoByFecha(fecha);
+    @GetMapping("/movimientos")
+    public List<MovimientoCuenta> verMovimientos(
+        @RequestParam(required = false) String tipoMovimiento,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha
+    ) {
+        if (tipoMovimiento != null && fecha != null) {
+            return bancoService.findMovimientoByTipoAndFecha(tipoMovimiento, fecha);
+        } else if (tipoMovimiento != null) {
+            return bancoService.findMovimientoByTipo(tipoMovimiento);
+        } else if (fecha != null) {
+            return bancoService.findMovimientoByFecha(fecha);
+        } else {
+            return bancoService.findAllMovimientos();
+        }
     }
 
 }

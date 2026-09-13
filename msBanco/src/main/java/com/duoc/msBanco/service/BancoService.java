@@ -13,17 +13,16 @@ import com.duoc.msBanco.exception.SaldoInsuficienteException;
 import com.duoc.msBanco.model.EstadoCuenta;
 import com.duoc.msBanco.model.MovimientoCuenta;
 import com.duoc.msBanco.model.TransferenciaRequest;
-import com.duoc.msBanco.model.TransferenciaResponse;
 import com.duoc.msBanco.repository.EstadoCuentaRepository;
 import com.duoc.msBanco.repository.MovimientoCuentaRepository;
 
 @Service 
 public class BancoService {
     
-    private MovimientoCuentaRepository movRepo;
+    private final MovimientoCuentaRepository movRepo;
     private final EstadoCuentaRepository estadoRepo;
 
-    BancoService(MovimientoCuentaRepository movRepo, EstadoCuentaRepository estadoRepo) {
+    public BancoService(MovimientoCuentaRepository movRepo, EstadoCuentaRepository estadoRepo) {
         this.movRepo = movRepo;
         this.estadoRepo = estadoRepo;
     }
@@ -49,7 +48,7 @@ public class BancoService {
 
     @Transactional 
     // Método para realizar una transferencia entre cuentas
-    public TransferenciaResponse realizarTransferencia(TransferenciaRequest request){
+    public MovimientoCuenta realizarTransferencia(TransferenciaRequest request){
         // Validar que las cuentas de origen y destino existan
         EstadoCuenta cuentaOrigen = findById(request.getCuentaOrigenId());
         EstadoCuenta cuentaDestino = findById(request.getCuentaDestinoId());
@@ -70,7 +69,9 @@ public class BancoService {
         }
         // Realizar la transferencia
         cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - request.getMonto());
+        cuentaOrigen.setGastos(cuentaOrigen.getGastos() + request.getMonto());
         cuentaDestino.setSaldo(cuentaDestino.getSaldo() + request.getMonto());
+        cuentaDestino.setIngresos(cuentaDestino.getIngresos() + request.getMonto());
 
         // Registrar movimientos en la cuenta de origen y destino
         MovimientoCuenta movimientoOrigen = MovimientoCuenta.builder()
@@ -79,7 +80,7 @@ public class BancoService {
                 .monto(request.getMonto() * -1) // Monto negativo para la cuenta de origen
                 .transaccion("transferencia")
                 .fecha(request.getFecha())
-                .descripcion("Transferencia a cuenta con ID:" + request.getCuentaDestinoId())
+                .descripcion("Transferencia a cuenta con ID: " + request.getCuentaDestinoId())
                 .build();
         cuentaOrigen.getMovimientos().add(movimientoOrigen);
 
@@ -100,11 +101,7 @@ public class BancoService {
         estadoRepo.save(cuentaDestino);
         
         // Retornar la respuesta
-        return TransferenciaResponse.builder()
-                .cuentaId(cuentaOrigen.getCuentaId())
-                .saldo(cuentaOrigen.getSaldo())
-                .movimiento(movimientoOrigen)
-                .build();
+        return movimientoOrigen;
     }
 
     @Transactional
@@ -122,6 +119,11 @@ public class BancoService {
         
         // Actualizar el saldo de la cuenta y guardarla en base de datos
         cuenta.setSaldo(cuenta.getSaldo() + movimiento.getMonto());
+        if(movimiento.getMonto() > 0){
+            cuenta.setIngresos(cuenta.getIngresos() + movimiento.getMonto());
+        } else {
+            cuenta.setGastos(cuenta.getGastos() + Math.abs(movimiento.getMonto())); 
+        }
         estadoRepo.save(cuenta);
         
         // Registrar el movimiento y retornarlo
@@ -135,6 +137,14 @@ public class BancoService {
 
     public List<MovimientoCuenta> findMovimientoByFecha(LocalDate fecha) {
         return movRepo.findByFecha(fecha);
+    }
+
+    public List<MovimientoCuenta> findMovimientoByTipoAndFecha(String tipoMovimiento, LocalDate fecha) {
+        return movRepo.findByTransaccionAndFecha(tipoMovimiento, fecha);
+    }
+    
+    public List<MovimientoCuenta> findAllMovimientos() {
+        return movRepo.findAll();
     }
 
 }
