@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS movimiento_cuenta (
     cuenta_id BIGINT NOT NULL,
     transaccion VARCHAR(100) NOT NULL,
     monto INT NOT NULL,
-    descripcion VARCHAR(255) NOT NULL
+    descripcion VARCHAR(255)
 );
 
 -- Index para acelerar el ordenamiento por cuenta_id de la tabla MOVIMIENTO_CUENTA
