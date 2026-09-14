@@ -1,4 +1,4 @@
-package com.duoc.BffBancoWeb.security.util;
+package com.duoc.BffBancoCajero.security.util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -9,7 +9,7 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.duoc.BffBancoWeb.security.config.JwtProperties;
+import com.duoc.BffBancoCajero.security.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -80,7 +80,7 @@ public class JwtUtil {
         long now = System.currentTimeMillis();
         
         return Jwts.builder()
-                .setIssuer("BffBancoWeb")
+                .setIssuer("BffBancoCajero")
                 .setSubject(userDetails.getUsername())
                 .claim("username", userDetails.getUsername())
                 .claim("tipo", "SERVICE_TOKEN")

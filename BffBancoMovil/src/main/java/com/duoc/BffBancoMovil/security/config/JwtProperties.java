@@ -1,4 +1,4 @@
-package com.duoc.BffBancoWeb.security.config;
+package com.duoc.BffBancoMovil.security.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
