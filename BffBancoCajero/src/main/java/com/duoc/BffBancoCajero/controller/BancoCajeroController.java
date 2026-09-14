@@ -1,5 +1,6 @@
 package com.duoc.BffBancoCajero.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,11 +42,7 @@ public class BancoCajeroController {
 
     @PostMapping("/movimientos")
     public ResponseEntity<MovimientoCuenta> realizarMovimiento(@Valid @RequestBody MovimientoCuentaRequest request) {
-        EstadoCuenta estadoCuenta = bancoCajeroService.getEstadoCuenta(request.getCuentaId());
-        if (estadoCuenta == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(bancoCajeroService.realizarMovimiento(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(bancoCajeroService.realizarMovimiento(request));
     }
     
 

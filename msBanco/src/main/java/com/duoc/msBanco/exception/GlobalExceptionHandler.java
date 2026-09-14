@@ -20,18 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
-    @ExceptionHandler(CuentaNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(CuentaNotFoundException ex, WebRequest request){
-        ErrorResponse body = new ErrorResponse(
-            java.time.LocalDateTime.now(),
-            HttpStatus.NOT_FOUND.value(),
-            "Not Found",
-            ex.getMessage(),
-            request.getDescription(false)
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-    }
-
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
         String details = ex.getBindingResult().getFieldErrors().stream()

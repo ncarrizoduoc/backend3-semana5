@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.duoc.BffBancoMovil.client.BancoMicroserviceClient;
 import com.duoc.BffBancoMovil.model.EstadoCuenta;
 import com.duoc.BffBancoMovil.model.MovimientoCuenta;
+import com.duoc.BffBancoMovil.model.TransferenciaRequest;
 
 @Service 
 public class BancoMovilService {
@@ -34,6 +35,10 @@ public class BancoMovilService {
         estadoCuenta.setMovimientos(movimientos);
         return estadoCuenta;
         
+    }
+
+    public MovimientoCuenta realizarTransferencia(TransferenciaRequest request) {
+        return bancoMicroserviceClient.realizarTransferencia(request);
     }
 
 }

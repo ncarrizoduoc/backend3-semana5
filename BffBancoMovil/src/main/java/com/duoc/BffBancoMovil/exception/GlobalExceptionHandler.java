@@ -1,4 +1,4 @@
-package com.duoc.BffBancoCajero.exception;
+package com.duoc.BffBancoMovil.exception;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
