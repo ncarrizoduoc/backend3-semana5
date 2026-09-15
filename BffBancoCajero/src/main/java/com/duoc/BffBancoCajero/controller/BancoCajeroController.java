@@ -9,6 +9,7 @@ import com.duoc.BffBancoCajero.model.EstadoCuenta;
 import com.duoc.BffBancoCajero.model.EstadoCuentaResponse;
 import com.duoc.BffBancoCajero.model.MovimientoCuenta;
 import com.duoc.BffBancoCajero.model.MovimientoCuentaRequest;
+import com.duoc.BffBancoCajero.model.MovimientoCuentaResponse;
 import com.duoc.BffBancoCajero.service.BancoCajeroService;
 
 import jakarta.validation.Valid;
@@ -41,8 +42,9 @@ public class BancoCajeroController {
     }
 
     @PostMapping("/movimientos")
-    public ResponseEntity<MovimientoCuenta> realizarMovimiento(@Valid @RequestBody MovimientoCuentaRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bancoCajeroService.realizarMovimiento(request));
+    public ResponseEntity<MovimientoCuentaResponse> realizarMovimiento(@Valid @RequestBody MovimientoCuentaRequest request) {
+        MovimientoCuentaResponse movimiento = new MovimientoCuentaResponse(bancoCajeroService.realizarMovimiento(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(movimiento);
     }
     
 
